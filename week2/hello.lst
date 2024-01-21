@@ -1,0 +1,18 @@
+     1                                 %line 1+1 hello.s
+     2                                 [global _start]
+     3                                 [section .text]
+     4                                 _start:
+     5 00000000 48C7C001000000          mov rax,1
+     6 00000007 48C7C701000000          mov rdi,1
+     7 0000000E 48C7C6[00000000]        mov rsi,msg
+     8 00000015 48BA0E000000000000-     mov rdx,msglen
+     9 00000015 00                 
+    10 0000001F 0F05                    syscall
+    11 00000021 48C7C03C000000          mov rax,60
+    12 00000028 48C7C700000000          mov rdi,0
+    13 0000002F 0F05                    syscall
+    14                                 
+    15                                 [section .data]
+    16 00000000 48656C6C6F2C20776F-    msg db "Hello, world!",10
+    17 00000000 726C64210A         
+    18                                 msglen equ $-msg

@@ -1,0 +1,4 @@
+/x (char) () //Display Byte
+/x (short int) () //Display Word
+/x (int) () //Display Dword
+/x (long long) () //Display Qword
