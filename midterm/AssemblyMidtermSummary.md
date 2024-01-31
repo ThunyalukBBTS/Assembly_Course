@@ -1,5 +1,5 @@
 # Assembly Lang Midterm Summary by BTxS
-- [Data Type](#variable-size-x86-64-assembly)
+- [Data Type](#variable-type-in-x86-64-assembly)
 - [Basic command](#basic-commmand)
 - [Basic format of code](#basic-format-of-code)
 - [mov(e)](#data-movement-page-3-7-of-slide)
