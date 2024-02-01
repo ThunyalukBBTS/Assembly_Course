@@ -268,7 +268,7 @@ if (90 >= 70) {
 |Jump if Below|`jb`| `if <op1> < <op2>`| Unsigned |
 |Jump if Below or Equal|`jbe`| `if <op1> <= <op2>`| Unsigned |
 |Jump if Above|`ja`| `if <op1> > <op2>`| Unsigned |
-|Jump if Above|`jae`| `if <op1> >= <op2>`| Unsigned |
+|Jump if Above or Equal|`jae`| `if <op1> >= <op2>`| Unsigned |
 
 assembly code example
 ```s
@@ -285,7 +285,7 @@ _start:
     mov byte [ansVar], 88 ; else {ansVar = 88}
     jmp last ; skip doSection
 doSection:
-    ; if true do ansVar = 55
+    ; if (true) {ansVar = 55}
     mov byte [ansVar], 55 
 last:
     mov rax, 60
