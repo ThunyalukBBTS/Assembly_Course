@@ -3,14 +3,14 @@
 - [Basic command](#basic-commmand)
 - [Basic format of code](#basic-format-of-code)
 - [mov(e)](#data-movement-page-3-7-of-slide)
-- Add +
-- Sub -
-- Multiply (mul and imul)
-- Divide (div and idiv)
+- [Add +](#addition)
+- [Sub -](#subtraction)
+- [Multiply](#multiply) (mul and imul)
+- [Divide](#divide) (div and idiv)
 - Logic (and, or, xor, not)
 - Shift (shl, shr, sal, sar)
-- Compare (cmp)
-- Jump (jmp)
+- [Compare](#comparator) (cmp)
+- [Jump](#jump) (jmp)
 
 ## Launching slide and github
 - examble code on [Github](https://github.com/watisleelapatra/X86-64-Assembly)
@@ -155,3 +155,140 @@ _start:
 ```
 ### `movzx` : move `unsigned` small to large size.</br>`movzx <to> <from>` (condition same as mov)
 ### `movsx` : move `signed` small to large size.</br>`movzx <to> <from>` (condition same as mov)
+
+## Addition
+### `add <to> <from>`
+ex. 89 + 90
+```s
+global _start
+section .data
+    aVar    db  89
+    bVar    db  90
+    ansVar  db  0
+section .text
+_start:
+    mov     al, byte [aVar] ; reg al = aVar
+    add     al, byte [bVar] ; al = al + bVar
+    mov     byte [ansVar]   ; ansVar = aVar + bVar
+last:
+    mov     rax, 60
+    mov     rdi, 0
+    syscall
+```
+
+## Subtraction
+### `sub <to> <from>`
+ex. 60 - 30
+```s
+global _start
+section .data
+    aVar    db  60
+    bVar    db  30
+    ansVar  db  0
+section .text
+_start:
+    mov     al, byte [aVar] ; reg al = aVar
+    sub     al, byte [bVar] ; al = al - bVar
+    mov     byte [ansVar]   ; ansVar = aVar - bVar
+last:
+    mov     rax, 60
+    mov     rdi, 0
+    syscall
+```
+
+## Multiply
+### `mul <from> ; for unsigned num`
+### !!! over number in a register. data will be in `dx:ax`
+```s
+global _start
+section .data
+    aVar    db  20
+    bVar    db  30
+    ansVar  dw  0
+
+section .text
+_start:
+    mov     al, byte [aVar] ; al = aVar
+    mul     byte [bVar] ; al = al * bVar
+    mov     byte [ansVar], al ; ansVar = al
+    mov     byte [ansVar+1], ah ; ansVar = ah:al
+last:
+    mov     rax, 60
+    mov     rdi, 0
+    syscall
+```
+### `imul <from> ; for signed num`
+
+## Divide
+### `div <from> ; unsigned`
+```s
+global _start
+section .data
+    wNumA   dw  4321
+    wNumB   dw  1234
+    wAns2   dw  0
+    wRem2   dw  0
+section .text
+_start:
+    ; wAns2 = wNumA / wNumB (unsigned)
+	mov     dx, 0
+	mov     ax, word [wNumA]
+	div     word [wNumB]        ; ax = dx:ax / wNumB
+	mov     word [wAns2], ax    ; result
+	mov     word [wRem2], dx    ; remainder
+last: 
+    mov     rax, 60
+    mov     rdi, 0
+    syscall
+```
+### `idiv <from> ; signed`
+
+## Comparator
+### `cmp <operand1> <operand1>`
+
+## Jump
+### normal jump to section `jmp <section_to_jmp>`
+code in java `if (condition) then {section}` in assembly use `jmp` and `cmp`
+```java
+if (90 >= 70) {
+    ans = 55;
+} else {
+    ans = 88;
+}
+```
+
+| condition | cmd | mean | note |
+| ---- | ---- | ---- | ---- |
+|Jump if Equal|`je`| `if <op1> == <op2>`| - |
+|Jump if Not Equal|`jne`| `if <op1> != <op2>`| - |
+|Jump if Less than|`jl`| `if <op1> < <op2>`| Signed |
+|Jump if Less than or Equal|`jle`| `if <op1> <= <op2>`| Signed |
+|Jump if Greater than|`jg`| `if <op1> > <op2>`| Signed |
+|Jump if Greater than or Equal|`jge`| `if <op1> >= <op2>`| Signed |
+|Jump if Below|`jb`| `if <op1> < <op2>`| Unsigned |
+|Jump if Below or Equal|`jbe`| `if <op1> <= <op2>`| Unsigned |
+|Jump if Above|`ja`| `if <op1> > <op2>`| Unsigned |
+|Jump if Above|`jae`| `if <op1> >= <op2>`| Unsigned |
+
+assembly code example
+```s
+global _start
+section .data
+    dLeft   db  90
+    dRight  db  70
+    ansVar  db  0
+section .text
+_start:
+    mov al, byte [dLeft]
+    cmp al, byte [dRight] ; compare dLeft : dRight
+    jge doSection
+    mov byte [ansVar], 88 ; else {ansVar = 88}
+    jmp last ; skip doSection
+doSection:
+    ; if true do ansVar = 55
+    mov byte [ansVar], 55 
+last:
+    mov rax, 60
+    mov rdi, 0
+    syscall
+```
